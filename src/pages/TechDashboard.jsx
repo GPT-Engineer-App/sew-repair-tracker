@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, VStack, HStack, Text, Box, Select, Button } from "@chakra-ui/react";
 
 const TechDashboard = () => {
   const [machines, setMachines] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
 
+  useEffect(() => {
+    const savedMachines = JSON.parse(localStorage.getItem("machines")) || [];
+    setMachines(savedMachines);
+  }, []);
+
   const allocateMachine = (machineId, techId) => {
+    const updatedMachines = machines.map((machine) => (machine.id === machineId ? { ...machine, techId } : machine));
+    setMachines(updatedMachines);
+    localStorage.setItem("machines", JSON.stringify(updatedMachines));
     setMachines(machines.map((machine) => (machine.id === machineId ? { ...machine, techId } : machine)));
   };
 

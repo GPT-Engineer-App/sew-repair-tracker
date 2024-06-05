@@ -13,8 +13,18 @@ const CheckIn = () => {
 
   const handleCheckIn = () => {
     const timestamp = new Date().toISOString();
-    setMachine({ ...machine, timestamp });
+    const updatedMachine = { ...machine, timestamp };
+    setMachine(updatedMachine);
     generateWipNumber();
+
+    const customers = JSON.parse(localStorage.getItem("customers")) || [];
+    const machines = JSON.parse(localStorage.getItem("machines")) || [];
+
+    customers.push(customer);
+    machines.push(updatedMachine);
+
+    localStorage.setItem("customers", JSON.stringify(customers));
+    localStorage.setItem("machines", JSON.stringify(machines));
   };
 
   return (
