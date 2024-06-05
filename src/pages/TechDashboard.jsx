@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { Container, VStack, HStack, Text, Box, Select, Button } from "@chakra-ui/react";
+import { fetchMachines, allocateMachineToTech } from "../utils/api";
 
 const TechDashboard = () => {
   const [machines, setMachines] = useState([]);
   const [selectedMachine, setSelectedMachine] = useState(null);
 
   useEffect(() => {
-    const savedMachines = JSON.parse(localStorage.getItem("machines")) || [];
-    setMachines(savedMachines);
+    const loadMachines = async () => {
+      const machines = await fetchMachines();
+      setMachines(machines);
+    };
+    loadMachines();
   }, []);
 
-  const allocateMachine = (machineId, techId) => {
+  const allocateMachine = async (machineId, techId) => {
+    await allocateMachineToTech(machineId, techId);
     const updatedMachines = machines.map((machine) => (machine.id === machineId ? { ...machine, techId } : machine));
     setMachines(updatedMachines);
-    localStorage.setItem("machines", JSON.stringify(updatedMachines));
-    setMachines(machines.map((machine) => (machine.id === machineId ? { ...machine, techId } : machine)));
   };
 
   return (

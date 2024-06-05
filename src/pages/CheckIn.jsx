@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, VStack, HStack, Text, Button, Input, Box } from "@chakra-ui/react";
+import { saveCustomerAndMachine } from "../utils/api";
 
 const CheckIn = () => {
   const [customer, setCustomer] = useState({ name: "", email: "", phone: "" });
@@ -11,20 +12,13 @@ const CheckIn = () => {
     setWipNumber(uniqueNumber);
   };
 
-  const handleCheckIn = () => {
+  const handleCheckIn = async () => {
     const timestamp = new Date().toISOString();
     const updatedMachine = { ...machine, timestamp };
     setMachine(updatedMachine);
     generateWipNumber();
 
-    const customers = JSON.parse(localStorage.getItem("customers")) || [];
-    const machines = JSON.parse(localStorage.getItem("machines")) || [];
-
-    customers.push(customer);
-    machines.push(updatedMachine);
-
-    localStorage.setItem("customers", JSON.stringify(customers));
-    localStorage.setItem("machines", JSON.stringify(machines));
+    await saveCustomerAndMachine(customer, updatedMachine);
   };
 
   return (
