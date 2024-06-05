@@ -13,6 +13,9 @@ const Navigation = () => {
       <Button as={Link} to="/tech-dashboard" colorScheme="teal">
         Tech Dashboard
       </Button>
+      <Button as={Link} to="/assign-machine" colorScheme="teal">
+        Assign Machine
+      </Button>
     </HStack>
   );
 };
